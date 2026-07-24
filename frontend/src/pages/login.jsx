@@ -25,7 +25,7 @@ export default function Login({ onLoginSuccess }) {
         ? { name, email, password }
         : { email, password };
 
-      const response = await axios.post(url, payload);
+      const response = await api.post(url, payload);
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));

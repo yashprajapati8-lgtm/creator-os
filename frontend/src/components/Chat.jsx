@@ -9,7 +9,7 @@ const Chat = ({ selectedProject, socket }) => {
     if (!selectedProject) return;
 
     try {
-      const res = await axios.get(`/api/chat/${selectedProject._id}`);
+      const res = await api.get(`/api/chat/${selectedProject._id}`);
 
       setMessages(res.data);
     } catch (err) {
@@ -21,7 +21,7 @@ const Chat = ({ selectedProject, socket }) => {
     if (!message.trim() || !selectedProject) return;
 
     try {
-      const res = await axios.post(`/api/chat/${selectedProject._id}`, {
+      const res = await api.post(`/api/chat/${selectedProject._id}`, {
         message,
       });
 

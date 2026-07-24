@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "./api";
 import { useEffect, useRef, useState } from "react";
 import { Folder, X, Sparkles, Download } from "lucide-react";
 import Login from "./pages/login";
@@ -50,20 +50,19 @@ export default function App() {
   console.log(showCreateModal);
 
   async function handleJoinProject() {
-    try {
-      await axios.post("https://creator-os-4ufq.onrender.com/api/projects/join", {
-        inviteCode,
-      });
+  try {
+    await api.post("/api/projects/join", {
+      inviteCode,
+    });
 
-      setInviteCode("");
-      setJoinModalOpen(false);
+    setInviteCode("");
+    setJoinModalOpen(false);
 
-      fetchProjects();
-    } catch (err) {
-      console.log(err);
-    }
+    fetchProjects();
+  } catch (err) {
+    console.log(err);
   }
-
+}
   function handleLogout() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -81,33 +80,33 @@ export default function App() {
     setView("login");
   }
 
-  const handleRenameProject = async (projectId, newTitle) => {
-    try {
-      console.log("projectId:", projectId, "newTitle:", newTitle);
+const handleRenameProject = async (projectId, newTitle) => {
+  try {
+    console.log("projectId:", projectId, "newTitle:", newTitle);
 
-      await axios.put(`/api/projects/${projectId}`, {
-        title: newTitle,
-      });
+    await api.put(`/api/projects/${projectId}`, {
+      title: newTitle,
+    });
 
-      await fetchProjects();
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    await fetchProjects();
+  } catch (err) {
+    console.error(err);
+  }
+};
 
-  const handleCreateProject = async (title) => {
-    try {
-      await axios.post("/api/projects", {
-        title,
-      });
+const handleCreateProject = async (title) => {
+  try {
+    await api.post("/api/projects", {
+      title,
+    });
 
-      await fetchProjects();
+    await fetchProjects();
 
-      setShowCreateModal(false);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    setShowCreateModal(false);
+  } catch (err) {
+    console.error(err);
+  }
+};
   const handleDeleteProject = async (projectId) => {
     try {
       await axios.delete(`/api/projects/${projectId}`);
@@ -118,25 +117,25 @@ export default function App() {
     }
   };
 
-  const handleOpenProject = async (project) => {
-    setSelectedProject(project);
-    setSelectedSceneId(null);
-    setScenes([]);
+ const handleOpenProject = async (project) => {
+  setSelectedProject(project);
+  setSelectedSceneId(null);
+  setScenes([]);
 
-    await fetchScenes(project._id);
+  await fetchScenes(project._id);
 
-    setView("editor");
-  };
+  setView("editor");
+};
 
-  const fetchProjects = async () => {
-    try {
-      const res = await axios.get("/api/projects");
-      setProjects(res.data);
-      console.log(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+const fetchProjects = async () => {
+  try {
+    const res = await api.get("/api/projects");
+    setProjects(res.data);
+    console.log(res.data);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   useEffect(() => {
     if (user) {
@@ -193,8 +192,8 @@ export default function App() {
 
   async function fetchScenes(projectId) {
     try {
-      const response = await axios.get(
-        `https://creator-os-4ufq.onrender.com/api/scenes?projectId=${projectId}`,
+      const response = await api.get(
+        `/api/scenes?projectId=${projectId}`,
       );
 
       setScenes(response.data);
@@ -232,8 +231,8 @@ export default function App() {
 
     const timer = setTimeout(async () => {
       try {
-        await axios.put(
-          `https://creator-os-4ufq.onrender.com/api/scenes/${selectedSceneId}/script`,
+        await api.put(
+          `/api/scenes/${selectedSceneId}/script`,
           { blocks: selectedScene?.blocks },
         );
         console.log("Script saved successfully");
@@ -250,8 +249,8 @@ export default function App() {
 
     const timer = setTimeout(async () => {
       try {
-        await axios.put(
-          `https://creator-os-4ufq.onrender.com/api/scenes/${selectedSceneId}/research`,
+        await api.put(
+          `/api/scenes/${selectedSceneId}/research`,
           { researchNote: selectedScene?.researchNote || "" },
         );
         socket.emit("research-update", {
@@ -359,7 +358,7 @@ export default function App() {
     }
 
     try {
-      const response = await axios.post("https://creator-os-4ufq.onrender.com/api/scenes", {
+      const response = await api.post("/api/scenes", {
         title: `Scene ${scenes.length + 1}`,
         projectId: selectedProject._id,
         project: selectedProject._id,
@@ -386,7 +385,7 @@ export default function App() {
 
   async function deleteScene(sceneId) {
     try {
-      await axios.delete(`https://creator-os-4ufq.onrender.com/api/scenes/${sceneId}`);
+      await api.delete(`/api/scenes/${sceneId}`);
 
       const remainingScenes = scenes.filter((scene) => scene._id !== sceneId);
 
@@ -414,10 +413,7 @@ export default function App() {
     }
 
     try {
-      const response = await axios.put(
-        `https://creator-os-4ufq.onrender.com/api/scenes/${sceneId}`,
-        { title },
-      );
+      const response = await api.put(`/api/scenes/${sceneId}`, { title });
 
       socket.emit("scene-renamed", {
         projectId: selectedProject._id,
@@ -446,8 +442,8 @@ export default function App() {
       const formData = new FormData();
       formData.append("asset", file);
 
-      const response = await axios.post(
-        `https://creator-os-4ufq.onrender.com/api/scenes/${selectedSceneId}/assets`,
+      const response = await api.post(
+        `/api/scenes/${selectedSceneId}/assets`,
         formData,
         {
           headers: {
@@ -508,12 +504,9 @@ export default function App() {
     try {
       setIsThinking(true);
 
-      const response = await axios.post(
-        "https://creator-os-4ufq.onrender.com/api/ai/suggest",
-        {
-          sceneId,
-
-          blockId,
+      const response = await api.post("/api/ai/suggest", {
+        sceneId,
+        blockId,
 
           text,
         },
@@ -529,8 +522,8 @@ export default function App() {
 
   async function deleteAttachment(attachmentId) {
     try {
-      const response = await axios.delete(
-        `https://creator-os-4ufq.onrender.com/api/scenes/${selectedSceneId}/assets/${attachmentId}`,
+      const response = await api.delete(
+        `/api/scenes/${selectedSceneId}/assets/${attachmentId}`,
       );
 
       setScenes((prevScenes) =>
