@@ -7,7 +7,7 @@ import dns from "dns";
 import { createServer } from "http";
 
 import authRoutes from "./routes/authRoutes.js";
-import projectRoutes from "./routes/projectRoutes.js";
+import projectRoutes from "./routes/ProjectRoutes.js";
 import sceneRoutes from "./routes/sceneRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import { initSocket } from "./socket/socket.js";
