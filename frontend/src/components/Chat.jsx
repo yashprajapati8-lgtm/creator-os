@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../api";
 import { useEffect, useState } from "react";
 
 const Chat = ({ selectedProject, socket }) => {

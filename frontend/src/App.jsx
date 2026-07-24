@@ -9,13 +9,7 @@ import socket from "./socket/socket";
 import Chat from "./components/Chat";
 import { createPortal } from "react-dom";
 
-axios.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+
 
 function createObjectId() {
   return Array.from(crypto.getRandomValues(new Uint8Array(12)), (byte) =>
@@ -107,15 +101,15 @@ const handleCreateProject = async (title) => {
     console.error(err);
   }
 };
-  const handleDeleteProject = async (projectId) => {
-    try {
-      await axios.delete(`/api/projects/${projectId}`);
+const handleDeleteProject = async (projectId) => {
+  try {
+    await api.delete(`/api/projects/${projectId}`);
 
-      await fetchProjects();
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    await fetchProjects();
+  } catch (err) {
+    console.error(err);
+  }
+};
 
  const handleOpenProject = async (project) => {
   setSelectedProject(project);

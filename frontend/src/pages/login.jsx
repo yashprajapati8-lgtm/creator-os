@@ -1,7 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../api";
 import { Sparkles } from "lucide-react";
-const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState("");
@@ -17,9 +16,7 @@ export default function Login({ onLoginSuccess }) {
     setLoading(true);
 
     try {
-      const url = isRegister
-        ? `${API_URL}/api/auth/register`
-        : `${API_URL}/api/auth/login`;
+      const url = isRegister ? "/api/auth/register" : "/api/auth/login";
 
       const payload = isRegister
         ? { name, email, password }
