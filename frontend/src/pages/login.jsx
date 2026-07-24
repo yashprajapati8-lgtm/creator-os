@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Sparkles } from "lucide-react";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState("");
@@ -17,8 +18,8 @@ export default function Login({ onLoginSuccess }) {
 
     try {
       const url = isRegister
-        ? "http://localhost:5000/api/auth/register"
-        : "http://localhost:5000/api/auth/login";
+        ? `${API_URL}/api/auth/register`
+        : `${API_URL}/api/auth/login`;
 
       const payload = isRegister
         ? { name, email, password }
@@ -51,7 +52,9 @@ export default function Login({ onLoginSuccess }) {
           <div className="w-10 h-10 rounded-2xl bg-white/8 border border-white/10 backdrop-blur-xl flex items-center justify-center">
             <Sparkles size={18} className="text-zinc-200" />
           </div>
-          <span className="text-xl font-semibold tracking-tight">CreatorOS</span>
+          <span className="text-xl font-semibold tracking-tight">
+            CreatorOS
+          </span>
         </div>
 
         <form
@@ -138,7 +141,11 @@ export default function Login({ onLoginSuccess }) {
               mt-1
             "
           >
-            {loading ? "Please wait..." : isRegister ? "Create account" : "Sign in"}
+            {loading
+              ? "Please wait..."
+              : isRegister
+                ? "Create account"
+                : "Sign in"}
           </button>
 
           <p
