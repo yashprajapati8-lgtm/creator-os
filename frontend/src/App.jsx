@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Folder, X, Sparkles, Download } from "lucide-react";
-import Login from "./pages/Login";
+import Login from "./pages/login";
 import ProfileMenu from "./components/ProfileMenu";
 import Dashboard from "./pages/Dashboard";
 import CreateProjectModal from "./components/CreateProjectModal";
