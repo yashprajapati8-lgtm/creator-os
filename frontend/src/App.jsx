@@ -51,7 +51,7 @@ export default function App() {
 
   async function handleJoinProject() {
     try {
-      await axios.post("http://localhost:5000/api/projects/join", {
+      await axios.post("https://creator-os-4ufq.onrender.com/api/projects/join", {
         inviteCode,
       });
 
@@ -194,7 +194,7 @@ export default function App() {
   async function fetchScenes(projectId) {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/scenes?projectId=${projectId}`,
+        `https://creator-os-4ufq.onrender.com/api/scenes?projectId=${projectId}`,
       );
 
       setScenes(response.data);
@@ -233,7 +233,7 @@ export default function App() {
     const timer = setTimeout(async () => {
       try {
         await axios.put(
-          `http://localhost:5000/api/scenes/${selectedSceneId}/script`,
+          `https://creator-os-4ufq.onrender.com/api/scenes/${selectedSceneId}/script`,
           { blocks: selectedScene?.blocks },
         );
         console.log("Script saved successfully");
@@ -251,7 +251,7 @@ export default function App() {
     const timer = setTimeout(async () => {
       try {
         await axios.put(
-          `http://localhost:5000/api/scenes/${selectedSceneId}/research`,
+          `https://creator-os-4ufq.onrender.com/api/scenes/${selectedSceneId}/research`,
           { researchNote: selectedScene?.researchNote || "" },
         );
         socket.emit("research-update", {
@@ -359,7 +359,7 @@ export default function App() {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/scenes", {
+      const response = await axios.post("https://creator-os-4ufq.onrender.com/api/scenes", {
         title: `Scene ${scenes.length + 1}`,
         projectId: selectedProject._id,
         project: selectedProject._id,
@@ -386,7 +386,7 @@ export default function App() {
 
   async function deleteScene(sceneId) {
     try {
-      await axios.delete(`http://localhost:5000/api/scenes/${sceneId}`);
+      await axios.delete(`https://creator-os-4ufq.onrender.com/api/scenes/${sceneId}`);
 
       const remainingScenes = scenes.filter((scene) => scene._id !== sceneId);
 
@@ -415,7 +415,7 @@ export default function App() {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/scenes/${sceneId}`,
+        `https://creator-os-4ufq.onrender.com/api/scenes/${sceneId}`,
         { title },
       );
 
@@ -447,7 +447,7 @@ export default function App() {
       formData.append("asset", file);
 
       const response = await axios.post(
-        `http://localhost:5000/api/scenes/${selectedSceneId}/assets`,
+        `https://creator-os-4ufq.onrender.com/api/scenes/${selectedSceneId}/assets`,
         formData,
         {
           headers: {
@@ -509,7 +509,7 @@ export default function App() {
       setIsThinking(true);
 
       const response = await axios.post(
-        "http://localhost:5000/api/ai/suggest",
+        "https://creator-os-4ufq.onrender.com/api/ai/suggest",
         {
           sceneId,
 
@@ -530,7 +530,7 @@ export default function App() {
   async function deleteAttachment(attachmentId) {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/scenes/${selectedSceneId}/assets/${attachmentId}`,
+        `https://creator-os-4ufq.onrender.com/api/scenes/${selectedSceneId}/assets/${attachmentId}`,
       );
 
       setScenes((prevScenes) =>
