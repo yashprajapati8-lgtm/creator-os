@@ -1,6 +1,6 @@
 import express from "express";
 import Scene from "../models/scene.js";
-import { protect } from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/authmiddleware.js";
 import Project from "../models/Project.js";
 
 import { upload } from "../config/cloudinary.js";
