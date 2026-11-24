@@ -89,17 +89,15 @@ const handleRenameProject = async (projectId, newTitle) => {
 };
 
 const handleCreateProject = async (title) => {
-  try {
-    await api.post("/api/projects", {
-      title,
-    });
+  const { data: project } = await api.post("/api/projects", {
+    title: title.trim(),
+  });
 
-    await fetchProjects();
-
-    setShowCreateModal(false);
-  } catch (err) {
-    console.error(err);
-  }
+  // The API creates the project's first scene too, so take the user directly
+  // into the workspace instead of leaving them on the project-picker screen.
+  setProjects((currentProjects) => [project, ...currentProjects]);
+  setShowCreateModal(false);
+  await handleOpenProject(project);
 };
 const handleDeleteProject = async (projectId) => {
   try {

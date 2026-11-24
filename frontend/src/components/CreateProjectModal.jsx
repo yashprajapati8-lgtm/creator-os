@@ -3,15 +3,27 @@ import { X } from "lucide-react";
 
 export default function CreateProjectModal({ onClose, onCreate }) {
   const [title, setTitle] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    if (!title.trim()) return;
+    const trimmedTitle = title.trim();
+    if (!trimmedTitle || isCreating) return;
 
-    onCreate(title);
+    setError("");
+    setIsCreating(true);
 
-    setTitle("");
+    try {
+      await onCreate(trimmedTitle);
+      setTitle("");
+    } catch (err) {
+      console.error("Unable to create project:", err);
+      setError("Could not create the project. Please try again.");
+    } finally {
+      setIsCreating(false);
+    }
   }
 
   return (
@@ -62,6 +74,7 @@ export default function CreateProjectModal({ onClose, onCreate }) {
             <button
   type="button"
   onClick={onClose}
+  disabled={isCreating}
   className="
     px-5
     py-3
@@ -80,7 +93,7 @@ export default function CreateProjectModal({ onClose, onCreate }) {
 
 <button
   type="submit"
-  disabled={!title.trim()}
+  disabled={!title.trim() || isCreating}
   className="
     px-6
     py-3
@@ -94,9 +107,10 @@ export default function CreateProjectModal({ onClose, onCreate }) {
     transition-all
   "
 >
-  Create
+  {isCreating ? "Creating…" : "Create"}
 </button>
           </div>
+          {error && <p role="alert" className="mt-4 text-sm text-red-400">{error}</p>}
         </form>
       </div>
     </div>
